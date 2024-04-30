@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+ <html>
+ <head>
+     <meta charset='utf-8' />
+     <title>Swipe between maps</title>
+     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js'></script>
+     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css' rel='stylesheet' />
+		
+     <!-- JS and CSS for the swipe plugin -->
+     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.js'></script>
+     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.css' type='text/css' />
+      <style>
+      body { margin:0; padding:0;overflow: hidden;}
+      body * {
+         -webkit-touch-callout: none;
+           -webkit-user-select: none;
+          -moz-user-select: none;
+           -ms-user-select: none;
+               user-select: none;
+          }
+		 
+      .map {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 100%;
+          }
+          
+         .LegendContainer {
+      position: absolute;
+      bottom: 60px; /* Adjust this value to position the legend properly */
+      left: 20px;
+      z-index: 2;
+      width: 300px;
+      height: auto; /* Set height to auto to accommodate legend content */
+      max-height: 200px; /* Set maximum height to limit the size of the legend */
+      overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+      background: darkgrey;
+               opacity: 90%;
+      transition: width 2s, height 2s;
+      border-radius: 7px;
+       }
+
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .legend-text {
+      font-size: 14px;
+    }
+
+
+    #title { z-index: 9999; 
+             background-color:darkgrey; 
+             opacity: 70%; 
+             text-align: center; 
+                    color: black
+          </style>
+     </head>
+
+
+     <body>
+         <div id="comparison-container">
+                <div id='owners' class='map'></div>  <!-- div for owners map div -->
+                <div id='renters' class='map'></div> <!--  div for renters map div -->
+            </div>
+
+
+        <div class="LegendContainer">
+      <div id="legend-title">
+        <h4>Percentage of Homeowners and Renters per census block</h4>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: hsl(225, 100%, 97%)"></span>
+        <span class="legend-text">Less than 17%</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: hsl(203, 47%, 82%)"></span>
+        <span class="legend-text">17-22%</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: hsl(202, 57%, 63%)"></span>
+        <span class="legend-text">22-27%</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #3182bd"></span>
+        <span class="legend-text">27-32%</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: hsl(210, 90%, 32%)"></span>
+        <span class="legend-text">More than 32%</span>
+      </div>
+    </div>
+
+
+          <div id='title'>
+                <h2>Homeowners vs. Renters in the Portland Metro Area </h2>
+                <h3>By: Juliette Setudeh Nejad</h3>
+        </div>
+
+
+         <script>
+           //add your Mapbox access token and map variable here!
+
+              mapboxgl.accessToken = 'pk.eyJ1IjoianNldHVkZWgiLCJhIjoiY2x1bGhrbTE1MHczeDJrbzZiNzZ3d3g1aSJ9.JteB5M3Y64mBcpSgTwDkvw';
+     var ownerMap = new mapboxgl.Map({
+         container: 'owners', // owners map div 
+         style: 'mapbox://styles/mapbox/dark-v10', // Mapbox dark style 
+         center: [-122.681880, 45.504591], 
+         zoom: 10 
+     });
+              ownerMap.on('load', function() {
+       // the rest of the owner data code will go in here
+
+                      ownerMap.addLayer({
+        id: 'Owner Data',
+        type: "fill",
+          source: {
+            type: 'vector',
+            url: 'mapbox://jsetudeh.avlzae04'  //input your tileset ID url e.g. 'mapbox://jomerson.6ykhlovc' 
+          },
+            'source-layer': 'Owner-Renter-Pop-amlazd', //input your source layer name e.g. 'Owner-Renter-Pop-ca08iw'
+          paint: {
+                 'fill-color':
+                   ["step",
+                    ["get", "Own"],
+                    "hsl(225, 100%, 97%)",
+                    17.0,
+                    "hsl(203, 47%, 82%)",
+                    22.0,
+                    "hsl(202, 57%, 63%)",
+                    27.0,
+                    "#3182bd",
+                    32.0,
+                     "hsl(210, 90%, 32%)"
+                   ],
+                   "fill-opacity": 0.7 
+               }   
+
+        });
+     });
+              ownerMap.on('mousemove', 'Owner Data', function (e) {
+
+             // Change the cursor style as a UI indicator.
+             ownerMap.getCanvas().style.cursor = 'pointer';
+
+             var coordinates = e.lngLat;
+             var description = e.features[0].properties.Own;
+
+             // Populate the popup and set its coordinates
+             // based on the feature found.
+             popup.setLngLat(coordinates)
+                .setHTML(" Owners " + description + "%")
+                .addTo(ownerMap);
+         });
+
+         ownerMap.on('mouseleave', 'Owner Data', function () {
+             ownerMap.getCanvas().style.cursor = '';
+             popup.remove();
+         });
+
+
+            var renterMap = new mapboxgl.Map({
+        container: 'renters', // owners map div 
+        style: 'mapbox://styles/mapbox/dark-v10', // Mapbox light style so we can observe the swipe
+        center: [-122.681880, 45.504591],// Use the same center as your other map so that they are perfectly aligned
+        zoom: 10 
+    }); 
+
+              renterMap.on('load', function() {
+       // the rest of the renter data code will go in here
+
+                   renterMap.addLayer({
+          id: 'Renter Data',
+          type: "fill",
+          source: {
+            type: 'vector',
+            url: 'mapbox://jsetudeh.avlzae04' //input your tileset ID URL
+          },
+            'source-layer': 'Owner-Renter-Pop-amlazd', //input your source layer name e.g. Owner-Renter-Pop-dr7310
+          paint: {
+            'fill-color':    ["step",
+       ["get", "Rent"],
+       "hsl(225, 100%, 97%)",
+       17.0,
+       "hsl(203, 47%, 82%)",
+       22.0,
+       "hsl(202, 57%, 63%)",
+       27.0,
+       "#3182bd",
+       32.0,
+        "hsl(210, 90%, 32%)"],
+       "fill-opacity": 0.7   ,
+          }
+     });
+
+
+
+
+
+     });
+
+             // Create a popup, but don't add it to the map yet.
+     var popup = new mapboxgl.Popup({
+         closeButton: false,
+         closeOnClick: false
+         });
+
+     renterMap.on('mousemove', 'Renter Data', function (e) {
+
+             // Change the cursor style as a UI indicator.
+             renterMap.getCanvas().style.cursor = 'pointer';
+
+             var coordinates = e.lngLat;
+             var description = e.features[0].properties.Rent;
+
+             // Populate the popup and set its coordinates
+             // based on the feature found.
+             popup.setLngLat(coordinates)
+                 .setHTML("Renters: " + description + "%")
+                 .addTo(renterMap);
+         });
+
+         renterMap.on('mouseleave', 'Renter Data', function () {
+            renterMap.getCanvas().style.cursor = '';
+            popup.remove();
+         });
+
+
+
+              // A selector or reference to HTML element
+     var container = '#comparison-container';
+
+     var map = new mapboxgl.Compare(ownerMap, renterMap, container, {})
+     // adding zoom controls to map
+        ownerMap.addControl(new mapboxgl.NavigationControl());
+        renterMap.addControl(new mapboxgl.NavigationControl());         
+
+
+         </script>
+
+         </body>
+ </html>
