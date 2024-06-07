@@ -7,65 +7,46 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css' rel='stylesheet' />
-    
+   
+    <!-- Link to Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    
-    
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    
-    
-    
-    
-    <!-- Include the Mapbox Geocoder CSS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!-- Link to Styling font-->
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
-    <!-- Include the Mapbox Geocoder JavaScript -->
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
-
+    
     <style>
-        p {    
-        font-family: "Roboto", sans-serif;
-              font-style: italic;
+        /* Style for paragraph tags */
+        p {
+            font-family: "Assistant", sans-serif;
+            font-weight: 400;
             color: black;
         }
 
-        body {
-            
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
+        /* Style for heading 3 tags */
+        h3 {
+            color: #c23b22;
+            font-size: 24px;
         }
         
-      
-        h4 {
-            color: black;
-            margin-left: 10px;
-        }
-
-        
-          h4 {
-            color: black;
-            margin-left: 10px;
-        }
-        
-        
+        /* Style for description panel */
         .descriptionPanel {
             position: absolute;
-            top: 65px;
+            top: 50px;
             left: 20px;
             z-index: 2;
-            max-width: 400px;
+            max-width: 500px;
+            max-height: 650px;
             background: #efefef;
-            overflow: hidden;
+            overflow-y: auto;
             border-radius: 7px;
             color: black;
-            font-family: 'Montserrat', sans-serif;
+            font-family: "Assistant", sans-serif;
             padding: 10px;
-            transition: height 0.3s ease;        }
+            transition: height 0.3s ease;
+        }
 
         .descriptionPanel img {
             display: block;
@@ -81,15 +62,13 @@
             width: 100%;
         }
 
-
-
         #menu {
             position: absolute;
             left: 0;
             top: 0;
             background: #efefef;
             padding: 10px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Roboto', sans-serif;
             display: flex;
             align-items: flex-start;
             width: 200px;
@@ -97,43 +76,53 @@
 
         .mapboxgl-popup {
             min-width: 380px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
-        
+
         .popupImage {
             width: 100%;
         }
 
         button {
-            font-family: "Courier Prime", monospace;
-            font-weight: 400;
+            font-family: "Assistant", sans-serif;
+            font-weight: 600;
             font-style: normal;
             cursor: pointer;
-        }
-
-        .flyToButton {
-            font-size: 16px;
-            margin-top: 12px;
-            padding: 8px 16px;
-            background-color: #0c30b0;
+            font-size: 40px; /* Larger font size */
+            margin: 10px; /* Increased margin for more spacing */
+            padding: 40px 80px; /* Larger padding for a bigger button */
+            background-color: rgba(239, 239, 239, 1); /* Light gray, fully opaque */    
             color: white;
             border: none;
             border-radius: 5px;
         }
 
+        button:hover {
+            background-color: rgba(194, 59, 34, 0.6); /* Lighter version of the original color, slightly opaque */
+        }
+
+        .flyToButton {
+            font-size: 18px;
+            margin-top: 12px;
+            padding: 8px 16px;
+            background-color: #c23b22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            z-index: 3;
+        }
+        
         .navigationButton {
-            font-size: 14px;
+            font-size: 18px;
             margin: 5px;
-            padding: 6px 12px;
-            background-color: #0c30b0;
+            padding: 8px 16px;
+            background-color: #c23b22;
             color: white;
             border: none;
             border-radius: 5px;
             display: none;
         }
 
-        
-        /* Style for the geocoder container */
         .geocoder {
             position: absolute;
             top: 10px;
@@ -144,21 +133,53 @@
 
         .tourButtons {
             position: absolute;
-            top: 65px; /* Adjusted to avoid clashing with navigation controls */
+            top: 65px;
             right: 60px;
             z-index: 3;
             display: flex;
             flex-direction: column;
         }
+
+        /* Style for the menu button */
+        .backToMenuButton {
+            font-size: 18px;
+            margin: 5px 0;
+            padding: 8px 16px;
+            background-color: #c23b22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            display: none;
+            position: absolute;
+            top: 17px;
+            left: 20px;
+            z-index: 3;
+        }
+        
+        /* Style for the source text */
+        .source-text {
+            font-family: "Assistant", sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
     
-      
+        /* Makes the address text bold */
+        .address-text {
+            font-family: "Assistant", sans-serif;
+            font-weight: 650;
+        }
     </style>
+    <!-- END OF STYLE -->
 </head>
 
 <body>
+    <button class="backToMenuButton" id="backToMenuButton" onclick="backToMenu()">Back to Menu</button>
     <div class="descriptionPanel" id="descriptionPanel">
+        <h3>Landmark Tour of the National Mall in Washington D.C.</h3>
+        <p><strong>By: Juliette Setudeh Nejad</strong></p>
         <p id="sidebar-content">
-            This is an interactive map that displays a route to landmarks in the National Mall in Washington D.C.
+            This is an interactive map that displays a route to possible landmarks in Washington D.C.
             <br><br>
             <strong>How to use the map:</strong><br>
             1. Click on any marker to view details about the landmark.<br>
@@ -188,7 +209,11 @@
             container: 'map',
             style: 'mapbox://styles/jsetudeh/clx0rxfa901m801rd803mgumq',
             center: [-77.026091, 38.889578],
-            zoom: 14
+            zoom: 14,
+            maxBounds: [
+                [-77.119759, 38.791645], // Southwest coordinates
+                [-76.909393, 38.995548]  // Northeast coordinates
+            ]
         });
 
         // Add navigation control (with compass)
@@ -202,113 +227,104 @@
         });
         document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
 
-        
-        // Creating markers and adding a photo and descripton
-
         const markersData = [
-           
             {
                 coordinates: [-77.00903829, 38.88980193],
-                 content: `<h2>National Museum of Natural History</h2>
-              <p>Address: East Capitol St NE & First St SE, Washington, DC 20004</p>
-              <p>The United States Capitol in Washington D.C is a symbol of the American people, the voernment and the meeting place of the U.S. Congress. While the Cpaitol is a working office building, it is where visitors from all over the United States come to learn about American democracy. It’s historic architecture and significant make it a must-visit landmark in washington D.C.  </p>
-              <img src="https://www.uscp.gov/sites/evo-subsites/www.uscp.gov/files/wysiwyg_uploaded/Box%204%20-%20Visit%20the%20Capitol.png" alt="US Capitol Image">'
-              <p>Source: Washington DC</p>`,
-                flyTo: { zoom: 17, pitch: 50, bearing: 90 }
+                content: `<h2>United States Capitol Building </h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=East+Capitol+St+NE+&+First+St+SE,+Washington,+DC+20004" target="_blank">East Capitol St NE & First St SE, Washington, DC 20004</a></span></p>
+                <p>The United States Capitol in Washington D.C is a symbol of the American people, the government and the meeting place of the U.S. Congress. While the Capitol is a working office building, it is where visitors from all over the United States come to learn about American democracy. Its historic architecture and significance make it a must-visit landmark in Washington D.C.</p>
+                <img src="https://www.uscp.gov/sites/evo-subsites/www.uscp.gov/files/wysiwyg_uploaded/Box%204%20-%20Visit%20the%20Capitol.png" alt="US Capitol Image">
+                <span class="source-text">Source : Washington DC</span>`,
+                flyTo: {zoom: 17, pitch: 60, bearing: 120 }
             },
-           
-            {coordinates: [ -77.02597582, 38.89127308],
+            {
+                coordinates: [-77.02597582, 38.89127308],
                 content: `<h2>National Museum of Natural History</h2>
-              <p>Address: 10th St. & Constitution Ave. NW, Washington, DC 20560</p>
-              <p>The Museum of Natural History is just one of many Smithsonian museums located in the National Mall. Like all Smithsonian museums, admission is free. This building is home to the world’s largest natural history museum and some highlights include the 45.5-carat Hope Diamond, Ocean Hall, Mammal Hall, Hall of Human Origins, Insect Zoo, dinosaurs, and the magnificent African bush elephant in the museum’s rotunda. Additionally, there is a Butterfly Pavilion that features hundreds of live butterflies. </p>
-              <img src="https://washington.org/sites/default/files/michellefortephotography_overview-of-museum-of-natural-history-atrium_mydccool-via-crowdriff.jpg" alt="Natural History Image">
-              <p>Source: National Museum of African American History & Culture</p>`,
-              flyTo: { zoom: 17, pitch: 60, bearing: 10 }},
-
-            
-             {coordinates: [ -77.03271691,38.89101356 ],
-            content: `<h2>National Museum of African American History & Culture</h2>
-          <p>Address: 1400 Constitution Ave NW, Washington, DC 20560</p>
-          <p>This Smithsonian museum is dedicated to the documentation of African American life, history, and culture. The museum’s collection includes over 36,000 artifacts, ranging from Harriet Tubman's hymnal to Chuck Berry’s Cadillac. It offers an in-depth look at the African American experience through powerful exhibits and engaging displays.</p>
-          <img src="https://ids.si.edu/ids/deliveryService?id=https://www.si.edu/sites/default/files/images/nmaahc-1000x675.jpg" alt="African American History Museum Image">
-          <p>Source: National Museum of African American History & Culture</p>`,
-                flyTo: { zoom: 18, pitch: 60, bearing: 10 }},
-        
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=10th+St.+&+Constitution+Ave.+NW,+Washington,+DC+20560" target="_blank">10th St. & Constitution Ave. NW, Washington, DC 20560</a></span></p>
+                <p>The Museum of Natural History is just one of many Smithsonian museums located in the National Mall. Like all Smithsonian museums, admission is free. This building is home to the world’s largest natural history museum and some highlights include the 45.5-carat Hope Diamond, Ocean Hall, Mammal Hall, Hall of Human Origins, Insect Zoo, dinosaurs, and the magnificent African bush elephant in the museum’s rotunda. Additionally, there is a Butterfly Pavilion that features hundreds of live butterflies.</p>
+                <img src="https://washington.org/sites/default/files/michellefortephotography_overview-of-museum-of-natural-history-atrium_mydccool-via-crowdriff.jpg" alt="Natural History Image">
+                <span class="source-text"> Source : National Museum of African American History & Culture</span>`,
+                flyTo: { zoom: 17, pitch: 60, bearing: 10 }
+            },
+            {
+                coordinates: [-77.03271691, 38.89101356],
+                content: `<h2>National Museum of African American History & Culture</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=1400+Constitution+Ave+NW,+Washington,+DC+20560" target="_blank">1400 Constitution Ave NW, Washington, DC 20560</a></span></p>
+                <p>This Smithsonian museum is dedicated to the documentation of African American life, history, and culture. The museum’s collection includes over 36,000 artifacts, ranging from Harriet Tubman's hymnal to Chuck Berry’s Cadillac. It offers an in-depth look at the African American experience through powerful exhibits and engaging displays.</p>
+                <img src="https://ids.si.edu/ids/deliveryService?id=https://www.si.edu/sites/default/files/images/nmaahc-1000x675.jpg" alt="African American History Museum Image">
+                <span class="source-text">Source : National Museum of African American History & Culture</span>`,
+                flyTo: { zoom: 18, pitch: 60, bearing: 10 }
+            },
             {
                 coordinates: [-77.03524373, 38.88946987],
                 content: `<h2>Washington Monument</h2>
-          <p>Address: 2 15th St NW, Washington, DC 20024</p>
-          <p>The Washington Monument is an iconic obelisk that honors George Washington, the first President of the United States. Standing at 555 feet, it is the tallest stone structure and obelisk in the world. Visitors can take an elevator to the top for a panoramic view of the National Mall and the city of Washington, D.C.</p>
-          <img src="https://www.nps.gov/common/uploads/grid_builder/wamo/crop16_9/7F9CFDD6-F5DB-63A5-9A7A01857B218BA5.jpg" alt="Washington Monument Image">
-          <p>Source: National Park Service</p>`,
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=2+15th+St+NW,+Washington,+DC+20024" target="_blank">2 15th St NW, Washington, DC 20024</a></span></p>
+                <p>The Washington Monument is an iconic obelisk that honors George Washington, the first President of the United States. Standing at 555 feet, it is the tallest stone structure and obelisk in the world. Visitors can take an elevator to the top for a panoramic view of the National Mall and the city of Washington, D.C.</p>
+                <img src="https://www.nps.gov/common/uploads/grid_builder/wamo/crop16_9/7F9CFDD6-F5DB-63A5-9A7A01857B218BA5.jpg" alt="Washington Monument Image">
+                <span class="source-text">Source : National Park Service</span>`,
                 flyTo: { zoom: 17, pitch: 60, bearing: -90 }
             },
             {
                 coordinates: [-77.0401472, 38.88943847],
                 content: `<h2>WW2 Memorial & Reflecting Pool Memorial Monument</h2>
-          <p>Address: 1750 Independence Ave SW, Washington, DC 20024</p>
-          <p>The World War II Memorial is a tribute to the 16 million people who served in the American armed forces during World War II. It features 56 pillars representing the U.S. states and territories at the time of the war and a pair of arches symbolizing the Atlantic and Pacific fronts. The memorial's serene setting and beautiful design offer a place for reflection and remembrance.</p>
-          <img src="https://www.sasaki.com/wp-content/uploads/2019/10/12.Lincoln-Reflecting-Pool.website_website-1000x662.jpg" alt="Reflecting Pool Image">
-          <p>Source: Washington DC</p>`,
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=1750+Independence+Ave+SW,+Washington,+DC+20024" target="_blank">1750 Independence Ave SW, Washington, DC 20024</a></span></p>
+                <p>The World War II Memorial is a tribute to the 16 million people who served in the American armed forces during World War II. It features 56 pillars representing the U.S. states and territories at the time of the war and a pair of arches symbolizing the Atlantic and Pacific fronts. The memorial's serene setting and beautiful design offer a place for reflection and remembrance.</p>
+                <img src="https://www.sasaki.com/wp-content/uploads/2019/10/12.Lincoln-Reflecting-Pool.website_website-1000x662.jpg" alt="Reflecting Pool Image">
+                <span class="source-text">Washington DC</span>`,
                 flyTo: { zoom: 18, pitch: 60, bearing: -80 }
             },
-            
-
-           {
-                coordinates: [-77.05020282569352,38.88939383530408],
-                content: `<h2>Lincoln Memorial </h2>
-          <p>Address: 2 Lincoln Memorial Cir NW, Washington, DC 20037</p>
-          <p>The Lincoln Memorial honors Abraham Lincoln, the 16th President of the United States, and is famous for its impressive Greek Doric architecture and the large seated sculpture of Lincoln. The memorial has been the site of many historic events, including Martin Luther King Jr.'s "I Have a Dream" speech.</p>
-          <img src="https://washington.org/sites/default/files/styles/generic_hero_banner_1440_x_600/public/pixels.sh_visitors-to-the-lincoln-memorial-at-night_mydccool-via-crowdriff.jpg.webp?itok=GtcWRBm" alt="Lincoln Memorial Image">
-          <p>Source: Washington DC</p>`,
+            {
+                coordinates: [-77.05020282569352, 38.88939383530408],
+                content: `<h2>Lincoln Memorial</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=2+Lincoln+Memorial+Cir+NW,+Washington,+DC+20037" target="_blank">2 Lincoln Memorial Cir NW, Washington, DC 20037</a></span></p>
+                <p>The Lincoln Memorial honors Abraham Lincoln, the 16th President of the United States, and is famous for its impressive Greek Doric architecture and the large seated sculpture of Lincoln. The memorial has been the site of many historic events, including Martin Luther King Jr.'s "I Have a Dream" speech.</p>
+                <img src="https://washington.org/sites/default/files/styles/generic_hero_banner_1440_x_600/public/pixels.sh_visitors-to-the-lincoln-memorial-at-night_mydccool-via-crowdriff.jpg.webp?itok=GtcWRBm" alt="Lincoln Memorial Image">
+                <span class="source-text">Washington DC</span>`,
                 flyTo: { zoom: 19, pitch: 50, bearing: 90 }
             },
-            
-            
             {
                 coordinates: [-77.04432637, 38.88629772],
-                content: `<h2>MLK Memorial </h2>
-          <p>Address: 1964 Independence Ave SW, Washington, DC 20024</p>
-          <p>The Martin Luther King Jr. Memorial honors the civil rights leader and his legacy. The memorial features a striking granite statue of Dr. King and includes excerpts from his sermons and speeches. The location along the Tidal Basin allows for peaceful reflection and offers stunning views of the surrounding monuments.</p>
-          <img src="https://cdn.britannica.com/28/152028-050-07CA4BC3/Martin-Luther-King-Jr-National-Memorial-Washington-DC.jpg" alt="Lincoln Memorial Image">
-          <p>Source: Washington DC</p>`,
+                content: `<h2>MLK Memorial</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=1964+Independence+Ave+SW,+Washington,+DC+20024" target="_blank">1964 Independence Ave SW, Washington, DC 20024</a></span></p>
+                <p>The Martin Luther King Jr. Memorial honors the civil rights leader and his legacy. The memorial features a striking granite statue of Dr. King and includes excerpts from his sermons and speeches. The location along the Tidal Basin allows for peaceful reflection and offers stunning views of the surrounding monuments.</p>
+                <img src="https://cdn.britannica.com/28/152028-050-07CA4BC3/Martin-Luther-King-Jr-National-Memorial-Washington-DC.jpg" alt="MLK Memorial Image">
+                <span class="source-text">Washington DC</span>`,
                 flyTo: { zoom: 18, pitch: 55, bearing: 30 }
             },
             {
                 coordinates: [-77.04381696, 38.88374061],
-               content: `<h2>Franklin Delano Roosevelt Memorial </h2>
-          <p>Address: 1850 West Basin Dr SW, Washington, DC 20242</p>
-          <p>This memorial is dedicated to the memory of Franklin Delano Roosevelt, the 32nd President of the United States, and his four terms in office. It spans 7.5 acres and includes waterfalls, statues, and quotes from Roosevelt's speeches and writings, reflecting his impact on the nation.</p>
-          <img src="https://www.nps.gov/common/uploads/cropped_image/primary/99BFEDEA-E4E7-BD9B-9BF78362C92220C6.jpg?width=1600&quality=90&mode=crop" alt="FDR Memorial Image">
-          <p>Source: National Park Service</p>`,
+                content: `<h2>Franklin Delano Roosevelt Memorial</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=1850+West+Basin+Dr+SW,+Washington,+DC+20242" target="_blank">1850 West Basin Dr SW, Washington, DC 20242</a></span></p>
+                <p>This memorial is dedicated to the memory of Franklin Delano Roosevelt, the 32nd President of the United States, and his four terms in office. It spans 7.5 acres and includes waterfalls, statues, and quotes from Roosevelt's speeches and writings, reflecting his impact on the nation.</p>
+                <img src="https://www.nps.gov/common/uploads/cropped_image/primary/99BFEDEA-E4E7-BD9B-9BF78362C92220C6.jpg?width=1600&quality=90&mode=crop" alt="FDR Memorial Image">
+                <span class="source-text">National Park Service</span>`,
                 flyTo: { zoom: 17, pitch: 55, bearing: 30 }
             },
             {
                 coordinates: [-77.03655523, 38.88139516],
-                 content: `<h2>Thomas Jefferson Memorial </h2>
-          <p>Address: Address: 16 E Basin Dr SW, Washington, DC 20242</p>
-          <p>The Thomas Jefferson Memorial is a neoclassical tribute to the third President of the United States and the author of the Declaration of Independence. The memorial features a bronze statue of Jefferson and inscriptions of his writings, highlighting his contributions to American democracy.</p>
-          <img src="https://www.nps.gov/common/uploads/grid_builder/thje/crop16_9/A8A9235B-1DD8-B71B-0BC0B5BD83666D32.jpg?width=640&quality=90&mode=crop" alt="Thomas Jefferson Memorial Image">
-          <p>Source: National Park Service</p>`,
+                content: `<h2>Thomas Jefferson Memorial</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=16+E+Basin+Dr+SW,+Washington,+DC+20242" target="_blank">16 E Basin Dr SW, Washington, DC 20242</a></span></p>
+                <p>The Thomas Jefferson Memorial is a neoclassical tribute to the third President of the United States and the author of the Declaration of Independence. The memorial features a bronze statue of Jefferson and inscriptions of his writings, highlighting his contributions to American democracy.</p>
+                <img src="https://www.nps.gov/common/uploads/grid_builder/thje/crop16_9/A8A9235B-1DD8-B71B-0BC0B5BD83666D32.jpg?width=640&quality=90&mode=crop" alt="Thomas Jefferson Memorial Image">
+                <span class="source-text">National Park Service</span>`,
                 flyTo: { zoom: 17, pitch: 55, bearing: 30 }
             },
-            
             {
                 coordinates: [-77.02998302, 38.88804649],
-                 content: `<h2>Smithsonian Museums</h2>
-          <p>Address: Various locations along the National Mall, Washington, DC</p>
-          <p>The Smithsonian Institution comprises multiple museums along the National Mall, each dedicated to different aspects of history, culture, science, and art. Notable museums include the National Air and Space Museum, the National Museum of American History, and the National Museum of Natural History. These museums offer free admission and are among the most visited in the world.</p>
-          <img src="https://washington.org/sites/default/files/travelwith_caro_summer-day-on-national-mall-in-front-of-smithsonian-castle_yesmydccool.jpg" alt="Smithsonian Castle Image">
-          <p>Source: Washington DC</p>`,
+                content: `<h2>Smithsonian Museums</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=Various+locations+along+the+National+Mall,+Washington,+DC" target="_blank">Various locations along the National Mall, Washington, DC</a></span></p>
+                <p>The Smithsonian Institution comprises multiple museums along the National Mall, each dedicated to different aspects of history, culture, science, and art. Notable museums include the National Air and Space Museum, the National Museum of American History, and the National Museum of Natural History. These museums offer free admission and are among the most visited in the world.</p>
+                <img src="https://washington.org/sites/default/files/travelwith_caro_summer-day-on-national-mall-in-front-of-smithsonian-castle_yesmydccool.jpg" alt="Smithsonian Castle Image">
+                <span class="source-text">Washington DC</span>`,
                 flyTo: { zoom: 17, pitch: 55, bearing: 30 }
             },
             {
                 coordinates: [-77.01363647, 38.88983221],
-                 content: `<h2>Capitol Pool </h2>
-          <p>Address: Between the U.S. Capitol and the National Mall, Washington, DC</p>
-          <p>The Capitol Reflecting Pool is a large, rectangular pool that offers a picturesque view of the U.S. Capitol. It serves as a tranquil area for visitors to relax and enjoy the scenery, often reflecting the Capitol dome and nearby monuments in its waters.</p>
-          <img src="https://media.istockphoto.com/id/157332033/photo/the-capitol-reflecting-pool-washington-d-c.jpg?s=612x612&w=0&k=20&c=eiK1wcDI36pSf8mw1igB5DHNr6PU8Nnc4vParGD00k4=" alt="Capitol Pool Image">
-          <p>Source: National Park Service</p>`,
+                content: `<h2>Capitol Reflecting Pool</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=Between+the+U.S.+Capitol+and+the+National+Mall,+Washington,+DC" target="_blank">Between the U.S. Capitol and the National Mall, Washington, DC</a></span></p>
+                <p>The Capitol Reflecting Pool is a large, rectangular pool that offers a picturesque view of the U.S. Capitol. It serves as a tranquil area for visitors to relax and enjoy the scenery, often reflecting the Capitol dome and nearby monuments in its waters.</p>
+                <img src="https://media.istockphoto.com/id/157332033/photo/the-capitol-reflecting-pool-washington-d-c.jpg?s=612x612&w=0&k=20&c=eiK1wcDI36pSf8mw1igB5DHNr6PU8Nnc4vParGD00k4=" alt="Capitol Reflecting Pool Image">
+                <span class="source-text">National Park Service</span>`,
                 flyTo: { zoom: 17, pitch: 55, bearing: 30 }
             }
         ];
@@ -317,12 +333,15 @@
         let markers = [];
 
         markersData.forEach((markerData, index) => {
-            const marker = new mapboxgl.Marker({ color: '#0c30b0' })
+            const marker = new mapboxgl.Marker({ color: '#c23b22' })
                 .setLngLat(markerData.coordinates)
                 .addTo(map);
 
             marker.getElement().addEventListener('click', () => {
                 document.getElementById('sidebar-content').innerHTML = markerData.content;
+                document.querySelector('#descriptionPanel h3').style.display = 'none';
+                document.querySelector('#descriptionPanel p strong').style.display = 'none';
+                document.getElementById('backToMenuButton').style.display = 'inline';
                 updateDescription(markerData.content);
             });
 
@@ -333,10 +352,12 @@
             var descriptionPanel = document.getElementById('descriptionPanel');
             var sidebarContent = document.getElementById('sidebar-content');
             sidebarContent.innerHTML = content;
+            document.querySelector('#descriptionPanel h3').style.display = 'none';
+            document.querySelector('#descriptionPanel p strong').style.display = 'none';
+            document.getElementById('backToMenuButton').style.display = 'inline';
 
             setTimeout(function () {
-                var height = sidebarContent.offsetHeight + 20; // Adjusted for padding and button
-                descriptionPanel.style.height = height + 'px';
+                descriptionPanel.style.height = 'auto';
             }, 100);
         }
 
@@ -360,7 +381,23 @@
             document.getElementById('prevButton').style.display = 'none';
             document.getElementById('nextButton').style.display = 'none';
             document.getElementById('endButton').style.display = 'none';
-            document.getElementById('sidebar-content').innerHTML = 'This is an interactive map that displays a route to landmarks in the National Mall in Washington D.C.';
+            document.getElementById('sidebar-content').innerHTML = '<p>This is an interactive map that displays a route to possible landmarks in Washington D.C.<br><br><strong>How to use the map:</strong><br>1. Click on any marker to view details about the landmark.<br>2. Use the "Take a tour" button to start an automated tour of the landmarks.<br>3. Navigate between stops using the "Next" and "Back" buttons.<br>4. Click "End Tour" to stop the automated tour and return to the initial view.<br>5. Use the search bar to find specific locations.<br>6. Use the navigation controls on the top right to zoom and rotate the map.</p>';
+            document.querySelector('#descriptionPanel h3').style.display = 'block';
+            document.querySelector('#descriptionPanel p strong').style.display = 'block';
+            document.getElementById('backToMenuButton').style.display = 'none';
+        }
+
+        function backToMenu() {
+            map.flyTo({
+                center: [-77.026091, 38.889578],
+                zoom: 14,
+                pitch: 0,
+                bearing: 0
+            });
+            document.getElementById('sidebar-content').innerHTML = '<p>This is an interactive map that displays a route to possible landmarks in Washington D.C.<br><br><strong>How to use the map:</strong><br>1. Click on any marker to view details about the landmark.<br>2. Use the "Take a tour" button to start an automated tour of the landmarks.<br>3. Navigate between stops using the "Next" and "Back" buttons.<br>4. Click "End Tour" to stop the automated tour and return to the initial view.<br>5. Use the search bar to find specific locations.<br>6. Use the navigation controls on the top right to zoom and rotate the map.</p>';
+            document.querySelector('#descriptionPanel h3').style.display = 'block';
+            document.querySelector('#descriptionPanel p strong').style.display = 'block';
+            document.getElementById('backToMenuButton').style.display = 'none';
         }
 
         function flyToStop(index) {
@@ -376,9 +413,9 @@
         }
 
         function flyToNextStop() {
-            if (currentStopIndex < markersData.length) {
-                flyToStop(currentStopIndex);
+            if (currentStopIndex < markersData.length - 1) {
                 currentStopIndex++;
+                flyToStop(currentStopIndex);
             }
         }
 
