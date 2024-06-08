@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>Tour of the Washington D.C. National Mall</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css' rel='stylesheet' />
+   
+    <!-- Link to Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!-- Link to Styling font-->
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+    
+    <style>
+        /* Style for paragraph tags */
+        p {font-family: "Assistant", sans-serif;
+            font-weight: 400;
+            color: black;}
+
+
+        /* Style for heading 3 tags */
+        h3 {color: #c23b22;
+            font-size: 28px;}
+          
+        
+        /* Style for description panel */
+        .descriptionPanel {
+            position: absolute;
+            top: 50px;
+            left: 20px;
+            z-index: 2;
+            max-width: 450px;
+            max-height: 650px;
+            background: #efefef;
+            overflow-y: auto;
+            border-radius: 7px;
+            color: black;
+            font-family: "Assistant", sans-serif;
+            padding: 10px;
+            transition: height 0.3s ease;}
+        
+        /* Style for images that are displayed in description panel */
+        .descriptionPanel img {
+            display: block;
+            width: 80%; 
+            height: auto;
+            margin: 10px auto;}
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;}
+
+        #menu {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #efefef;
+            padding: 10px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: flex-start;
+            width: 200px;}
+
+
+        /* Style for text inside buttons*/
+        button {
+            font-family: "Assistant", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+            cursor: pointer;
+            font-size: 40px; 
+            margin: 10px; 
+            padding: 40px 80px;
+            background-color: rgba(239, 239, 239, 1);   
+            color: white;
+            border: none;
+            border-radius: 5px;}
+
+        /* Changes background color of buttons to be lighter when hovered over */
+        button:hover {background-color: rgba(194, 59, 34, 0.6);}
+
+        /* Style for "Take a tour" button */
+        .flyToButton {
+            font-size: 18px;
+            margin-top: 12px;
+            padding: 8px 16px;
+            background-color: #c23b22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            z-index: 3;}
+        
+        /* Style for "back," "next," and "end tour" buttons */
+        .navigationButton {
+            font-size: 18px;
+            margin: 5px;
+            padding: 8px 16px;
+            background-color: #c23b22;
+            color: white;
+            border: none;
+            bordfer-radius: 5px;
+            display: none;}
+        
+        /* Style for search bar */
+        .geocoder {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            z-index: 1;
+            width: 300px;}
+        
+        /* Position for tour buttons*/
+        .tourButtons {
+            position: absolute;
+            top: 65px;
+            right: 60px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;}
+
+        /* Style for the menu button */
+        .backToMenuButton {
+            font-size: 18px;
+            margin: 5px 0;
+            padding: 8px 16px;
+            background-color: #c23b22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            display: none;
+            position: absolute;
+            top: 17px;
+            left: 20px;
+            z-index: 3;}
+        
+       /* Style for the search button  */
+          .geocoder {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            z-index: 1;
+            width: 300px;} 
+        
+       
+    </style>
+    <!-- END OF STYLE -->
+</head>
+
+<body>
+    
+        <!-- Button to return to main menu & starting coordinates -->
+    <button class="backToMenuButton" id="backToMenuButton" onclick="backToMenu()">Back to Menu</button>
+    
+    <!-- Title & Instructions for description panel  -->
+    <div class="descriptionPanel" id="descriptionPanel">
+        <h3>Landmark Tour of the National Mall in Washington D.C.</h3>
+        <p><strong>By: Juliette Setudeh Nejad</strong></p>
+        <p id="sidebar-content">
+            This is an interactive map that displays a route to possible landmarks in Washington D.C.
+            <br><br>
+            <strong>How to use the map:</strong><br>
+            1. Click on any marker to view details about the landmark.<br>
+            2. Use the "Take a tour" button to start an automated tour of the landmarks.<br>
+            3. Navigate between stops using the "Next" and "Back" buttons.<br>
+            4. Click "End Tour" to stop the automated tour and return to the initial view.<br>
+            5. Use the search bar to find specific locations.<br>
+            6. Use the navigation controls on the top right to zoom and rotate the map.
+        </p>
+    </div>
+    
+    <div id='map'></div>
+    <!-- Buttons for controlling the fly to tour  -->
+    <div class="tourButtons">
+        <button class="flyToButton" onclick="startTour()" id="flyToButton">Take a tour</button>
+        <button class="navigationButton" onclick="flyToPrevStop()" id="prevButton">Back</button>
+        <button class="navigationButton" onclick="flyToNextStop()" id="nextButton">Next</button>
+        <button class="navigationButton" onclick="endTour()" id="endButton">End Tour</button>
+    </div>
+    
+    <!-- Adding a search bar  -->
+    <div id="geocoder" class="geocoder"></div>
+    
+    <!-- initializing map with mapbox, and setting starting coordinates and max bounds -->
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoianNldHVkZWgiLCJhIjoiY2x1bGhrbTE1MHczeDJrbzZiNzZ3d3g1aSJ9.JteB5M3Y64mBcpSgTwDkvw';
+        
+        
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/jsetudeh/clx0rxfa901m801rd803mgumq',
+            center: [-77.026091, 38.889578],
+            zoom: 14,
+            maxBounds: [
+                [-77.119759, 38.791645], 
+                [-76.909393, 38.995548]]});
+        
+
+            // Creating and labeling markers to place on map, creates setting for 'fly to' animation such as tilt and direction of map 
+        const markersData = [
+           
+                        // United States Capitol Building 
+            {
+                coordinates: [-77.00903829, 38.88980193],
+                content: `<h2>United States Capitol Building </h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=East+Capitol+St+NE+&+First+St+SE,+Washington,+DC+20004" target="_blank">East Capitol St NE & First St SE, Washington, DC 20004</a></span></p>
+                <p>The United States Capitol in Washington D.C is a symbol of the American people, the government and the meeting place of the U.S. Congress. While the Capitol is a working office building, it is where visitors from all over the United States come to learn about American democracy. Its historic architecture and significance make it a must-visit landmark in Washington D.C.</p>
+                <img src="https://www.uscp.gov/sites/evo-subsites/www.uscp.gov/files/wysiwyg_uploaded/Box%204%20-%20Visit%20the%20Capitol.png" alt="US Capitol Image">
+                <span class="source-text">Source : United States Capitol Police,  </span> <a href="https://www.uscp.gov/visiting-capitol-hill" target="_blank">Website</a>`,
+                flyTo: { zoom: 16.5, pitch: 60, bearing: -90 }
+            },
+            // National Museum of Natural History 
+            {
+                coordinates: [-77.02597582, 38.89127308],
+                content: `<h2>National Museum of Natural History</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=10th+St.+&+Constitution+Ave.+NW,+Washington,+DC+20560" target="_blank">10th St. & Constitution Ave. NW, Washington, DC 20560</a></span></p>
+                <p>The Museum of Natural History is just one of many Smithsonian museums located in the National Mall. Like all Smithsonian museums, admission is free. This building is home to the world’s largest natural history museum and some highlights include the 45.5-carat Hope Diamond, Ocean Hall, Mammal Hall, Hall of Human Origins, Insect Zoo, dinosaurs, and the magnificent African bush elephant in the museum’s rotunda. Additionally, there is a Butterfly Pavilion that features hundreds of live butterflies.</p>
+                <img src="https://washington.org/sites/default/files/michellefortephotography_overview-of-museum-of-natural-history-atrium_mydccool-via-crowdriff.jpg" alt="Natural History Image">
+                <span class="source-text"> Source : Washington DC, </span><a href="https://washington.org/DC-guide-to/smithsonian-national-museum-natural-history">Website</a>`,
+                flyTo: { zoom: 16.5, pitch: 60, bearing: -38 }
+            },
+
+             // National Museum of African American History & Culture
+            {
+                coordinates: [-77.03271691, 38.89101356],
+                content: `<h2>National Museum of African American History & Culture</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=1400+Constitution+Ave+NW,+Washington,+DC+20560" target="_blank">1400 Constitution Ave NW, Washington, DC 20560</a></span></p>
+                <p>This Smithsonian museum is dedicated to the documentation of African American life, history, and culture. The museum’s collection includes over 36,000 artifacts, ranging from Harriet Tubman's hymnal to Chuck Berry’s Cadillac. It offers an in-depth look at the African American experience through powerful exhibits and engaging displays.</p>
+                <img src="https://ids.si.edu/ids/deliveryService?id=https://www.si.edu/sites/default/files/images/nmaahc-1000x675.jpg" alt="African American History Museum Image">
+                <span class="source-text">Source : Smithsonian Institution, </span> <a href="https://www.si.edu/museums/african-american-museum">Website</a>`,
+                flyTo: { zoom: 18, pitch: 60, bearing: 10 }
+            },
+            // Washington Monument
+            {
+                coordinates: [-77.03524373, 38.88946987],
+                content: `<h2>Washington Monument</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=2+15th+St+NW,+Washington,+DC+20024" target="_blank">2 15th St NW, Washington, DC 20024</a></span></p>
+                <p>The Washington Monument is an iconic obelisk that honors George Washington, the first President of the United States. Standing at 555 feet, it is the tallest stone structure and obelisk in the world. Visitors can take an elevator to the top for a panoramic view of the National Mall and the city of Washington, D.C.</p>
+                <img src="https://www.nps.gov/common/uploads/grid_builder/wamo/crop16_9/7F9CFDD6-F5DB-63A5-9A7A01857B218BA5.jpg" alt="Washington Monument Image">
+                <span class="source-text">Source : National Park Service, </span> <a href="https://www.nps.gov/wamo/index.htm">Website</a>`,
+                flyTo: { zoom: 17, pitch: 60, bearing: -90 }
+            },
+            // World War II Memorial & Reflecting Pool
+            {
+                coordinates: [-77.0401472, 38.88943847],
+                content: `<h2>World War II Memorial & Reflecting Pool</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=1750+Independence+Ave+SW,+Washington,+DC+20024" target="_blank">1750 Independence Ave SW, Washington, DC 20024</a></span></p>
+                <p>The World War II Memorial is a tribute to the 16 million people who served in the American armed forces during World War II. It features 56 pillars representing the U.S. states and territories at the time of the war and a pair of arches symbolizing the Atlantic and Pacific fronts. The memorial additionally looks out onto the Lincoln Memorial which is one of the most recognized locations in Washington D.C. This serene setting and beautiful design offers visitors a palce for reflection and remembrance. Visitors can walk up and down the reflecting pool to the Lincoln Memorial.</p>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1AtXf1oZaMBw7kLdAVVRh6xMErb070SSBxw&s">
+                <span class="source-text"> Source : Washington D.C Travel, </span> <a href="http://www.dchistory.com/ww2-memorial-history.html">Website</a>`,
+                flyTo: { zoom: 18, pitch: 80, bearing: -90 }
+            },
+            // Lincoln Memorial 
+            {
+                coordinates: [-77.04995662714357, 38.88935883549587],
+                content: `<h2>Lincoln Memorial</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=2+Lincoln+Memorial+Cir+NW,+Washington,+DC+20037" target="_blank">2 Lincoln Memorial Cir NW, Washington, DC 20037</a></span></p>
+                <p>The Lincoln Memorial honors Abraham Lincoln, the 16th President of the United States, and is famous for its impressive Greek Doric architecture and the large seated sculpture of Lincoln. The memorial has been the site of many historic events, including Martin Luther King Jr.'s "I Have a Dream" speech. Visitors can climb the stairs into the memorial where etched into the wall is a memorable quote: "In this temple, as in the hearts of the people for whom he saved the Union, the memory of Abraham Lincoln is enshrined forever." A 19-foot tall Abraham Lincoln sits in his chair looking out into the Mall. </p>
+                <img src="https://washington.org/sites/default/files/styles/generic_hero_banner_1440_x_600/public/pixels.sh_visitors-to-the-lincoln-memorial-at-night_mydccool-via-crowdriff.jpg.webp?itok=GtcWRBm" alt="Lincoln Memorial Image">
+                <span class="source-text">Washington DC, </span> <a href="https://washington.org/DC-guide-to/lincoln-memorial">Website</a>`,
+                flyTo: { zoom: 18, pitch: 80, bearing: -90 }
+            },
+            // MLK Memorial
+            {
+                coordinates: [-77.04432637, 38.88629772],
+                content: `<h2>Martin Luther King Jr. Memorial</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=1964+Independence+Ave+SW,+Washington,+DC+20024" target="_blank">1964 Independence Ave SW, Washington, DC 20024</a></span></p>
+                <p>The Martin Luther King Jr. Memorial honors the civil rights leader and his legacy. The memorial features a striking granite statue of Dr. King and includes excerpts from his sermons and speeches. Along the side the main slab the word the words “Out of the mountain of despair, a stone of hope,” taken from the “Dream” speech, are inscribed on one side of the stone. The location along the Tidal Basin allows for peaceful reflection and offers stunning views of the surrounding monuments.</p>
+                <img src="https://cdn.britannica.com/28/152028-050-07CA4BC3/Martin-Luther-King-Jr-National-Memorial-Washington-DC.jpg" alt="MLK Memorial Image">
+                <span class="source-text">Britannica, </span> <a href="https://www.britannica.com/topic/Martin-Luther-King-Jr-National-Memorial">Website</a>`,
+                flyTo: { zoom: 18, pitch: 55, bearing: 20 }
+            },
+            // Franklin Delano Roosevelt Memorial
+            {
+                coordinates: [-77.04381696, 38.88374061],
+                content: `<h2>Franklin Delano Roosevelt Memorial</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=1850+West+Basin+Dr+SW,+Washington,+DC+20242" target="_blank">1850 West Basin Dr SW, Washington, DC 20242</a></span></p>
+                <p>This memorial is dedicated to the memory of Franklin Delano Roosevelt, the 32nd President of the United States, and his four terms in office. It spans 7.5 acres and includes waterfalls, statues, and quotes from Roosevelt's speeches and writings, reflecting his impact on the nation.</p>
+                <img src="https://www.nps.gov/common/uploads/cropped_image/primary/99BFEDEA-E4E7-BD9B-9BF78362C92220C6.jpg?width=1600&quality=90&mode=crop" alt="FDR Memorial Image">
+                <span class="source-text">National Park Service, </span> <a href="https://www.nps.gov/thje/index.htm">Website</a>`,
+                flyTo: { zoom: 18, pitch: 75, bearing: -150 }
+            },
+            // Thomas Jefferson Memorial
+            {
+                coordinates: [-77.03655523, 38.88139516],
+                content: `<h2>Thomas Jefferson Memorial</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=16+E+Basin+Dr+SW,+Washington,+DC+20242" target="_blank">16 E Basin Dr SW, Washington, DC 20242</a></span></p>
+                <p>The Thomas Jefferson Memorial is a neoclassical tribute to the third President of the United States and the author of the Declaration of Independence. The memorial features a bronze statue of Jefferson and inscriptions of his writings, highlighting his contributions to American democracy.</p>
+                <img src="https://www.nps.gov/common/uploads/grid_builder/thje/crop16_9/A8A9235B-1DD8-B71B-0BC0B5BD83666D32.jpg?width=640&quality=90&mode=crop" alt="Thomas Jefferson Memorial Image">
+                <span class="source-text">National Park Service, </span> <a href="https://www.google.com/maps?q=16+E+Basin+Dr+SW,+Washington,+DC+20242" target="_blank">Article</a>`,
+                flyTo: { zoom: 17.5, pitch: 55, bearing: 180 }
+            },
+            // Smithsonian Museums
+            {
+                coordinates: [ -77.02603211873019, 38.8889829438225],
+                content: `<h2>Smithsonian Museums</h2>
+                <p><span class="address-text">Address: <a href="https://www.google.com/maps/place/Smithsonian+Castle/@38.8886489,-77.0298945,700m/data=!3m1!1e3!4m6!3m5!1s0x89b7b79c6ba55fef:0x826d3176576f4a42!8m2!3d38.8887861!4d-77.0260229!16zL20vMDMzeGdt?entry=ttu">1000 Jefferson Dr SW, Washington, DC 20560</a></span></p>
+                <p>The Smithsonian Institution comprises multiple museums along the National Mall, each dedicated to different aspects of history, culture, science, and art. Notable museums include the National Air and Space Museum, the National Museum of American History, and the National Museum of Natural History. These museums offer free admission and are among the most visited in the world.</p>
+                <img src="https://washington.org/sites/default/files/travelwith_caro_summer-day-on-national-mall-in-front-of-smithsonian-castle_yesmydccool.jpg" alt="Smithsonian Castle Image">
+                <span class="source-text">Washington DC</span> <a href="https://washington.org/DC-guide-to/smithsonian-institution-building-castle">Website</a>`,
+                flyTo: { zoom: 16.5, pitch: 55, bearing: 30 }
+            },
+
+            
+            //United States Botanic Garden
+            {
+            coordinates: [-77.01286184232914, 38.888328822572255],
+            content: `<h2>United States Botanic Garden </h2>
+            <p><span class="address-text">Address: <a href="https://www.google.com/maps/place/United+States+Botanic+Garden/@38.8881451,-77.0128833,700m/data=!3m2!1e3!4b1!4m6!3m5!1s0x89b7b780d4824e1d:0x9d76b2fe03d27f20!8m2!3d38.8881451!4d-77.0128833!16zL20vMDM4OXpr?entry=ttu">100 Maryland Ave SW, Washington, DC 20001</a></span></p>
+            <p>The United States Botanic Garden is a living plant museum that informs visitors about the importance and diversity of plants, as well as their aesthetic, cultural, economic, therapeutic, and ecological significance. The garden features a variety of plant collections, including rare and endangered species, and offers a tranquil environment for visitors to enjoy and learn about the plant world.</p>
+            <img src="https://static.themarthablog.com/2018/01/IMG_5623.jpg" alt="United States Botanic Garden interior picture">
+            <span class="source-text">Source: Martha Stewart Blog,</span> <a href="https://www.themarthablog.com/2018/01/the-united-states-botanic-garden.html"> Article</a>`,
+            flyTo: { zoom: 17.5, pitch: 70, bearing: -180 }
+        }
+
+        ];
+        
+        //Makes fly to tour start from the first stop
+        let currentStopIndex = 0;
+        let markers = [];
+        
+        //Creates red markers and sets their coordinates 
+        markersData.forEach((markerData, index) => {
+            const marker = new mapboxgl.Marker({ color: '#c23b22' })
+                .setLngLat(markerData.coordinates)
+                .addTo(map);
+
+        //Adds click event listeneres to the marker 
+            marker.getElement().addEventListener('click', () => {
+                document.getElementById('sidebar-content').innerHTML = markerData.content;
+                document.querySelector('#descriptionPanel h3').style.display = 'none';
+                document.querySelector('#descriptionPanel p strong').style.display = 'none';
+                document.getElementById('backToMenuButton').style.display = 'inline';
+                updateDescription(markerData.content);
+            });
+
+            markers.push(marker);
+        });
+
+        //Adds click event listeners to the marker 
+        function updateDescription(content) {
+            var descriptionPanel = document.getElementById('descriptionPanel');
+            var sidebarContent = document.getElementById('sidebar-content');
+            sidebarContent.innerHTML = content;
+            document.querySelector('#descriptionPanel h3').style.display = 'none';
+            document.querySelector('#descriptionPanel p strong').style.display = 'none';
+            document.getElementById('backToMenuButton').style.display = 'inline';
+
+            setTimeout(function () {
+                descriptionPanel.style.height = 'auto';
+            }, 100);
+        }
+    // Starts tour
+        function startTour() {
+            document.getElementById('flyToButton').style.display = 'none';
+            document.getElementById('prevButton').style.display = 'inline';
+            document.getElementById('nextButton').style.display = 'inline';
+            document.getElementById('endButton').style.display = 'inline';
+            flyToStop(currentStopIndex);
+        }
+        // Ends the tour
+        function endTour() {
+        // Centers the map to the starting view 
+            map.flyTo({
+                center: [-77.026091, 38.889578],
+                zoom: 14,
+                pitch: 0,
+                bearing: 0
+            });
+            currentStopIndex = 0;
+            
+        //Displays the "Take a tour" button 
+            document.getElementById('flyToButton').style.display = 'inline';
+        //Hides navigation buttons  
+            document.getElementById('prevButton').style.display = 'none';
+            document.getElementById('nextButton').style.display = 'none';
+            document.getElementById('endButton').style.display = 'none';
+        // Resets the description panel content to initial instructions
+            document.getElementById('sidebar-content').innerHTML = '<p>This is an interactive map that displays a route to possible landmarks in Washington D.C.<br><br><strong>How to use the map:</strong><br>1. Click on any marker to view details about the landmark.<br>2. Use the "Take a tour" button to start an automated tour of the landmarks.<br>3. Navigate between stops using the "Next" and "Back" buttons.<br>4. Click "End Tour" to stop the automated tour and return to the initial view.<br>5. Use the search bar to find specific locations.<br>6. Use the navigation controls on the top right to zoom and rotate the map.</p>';
+        // Shows title and name in description panel 
+            document.querySelector('#descriptionPanel h3').style.display = 'block';
+            document.querySelector('#descriptionPanel p strong').style.display = 'block';
+        // Hides the back to menu button 
+         document.getElementById('backToMenuButton').style.display = 'none';
+        }
+        //Creates function to return back to main menu & starting coordinates 
+        function backToMenu() {
+            map.flyTo({
+                center: [-77.026091, 38.889578],
+                zoom: 14,
+                pitch: 0,
+                bearing: 0
+            });
+            document.getElementById('sidebar-content').innerHTML = '<p>This is an interactive map that displays a route to possible landmarks in Washington D.C.<br><br><strong>How to use the map:</strong><br>1. Click on any marker to view details about the landmark.<br>2. Use the "Take a tour" button to start an automated tour of the landmarks.<br>3. Navigate between stops using the "Next" and "Back" buttons.<br>4. Click "End Tour" to stop the automated tour and return to the initial view.<br>5. Use the search bar to find specific locations.<br>6. Use the navigation controls on the top right to zoom and rotate the map.</p>';
+            document.querySelector('#descriptionPanel h3').style.display = 'block';
+            document.querySelector('#descriptionPanel p strong').style.display = 'block';
+            document.getElementById('backToMenuButton').style.display = 'none';
+        }
+        // Allows the map to fly to specific stops in the tour when the buttons are clicked - updates the content in the description bar
+        function flyToStop(index) {
+            const stop = markersData[index];
+            map.flyTo({
+                center: stop.coordinates,
+                zoom: stop.flyTo.zoom,
+                pitch: stop.flyTo.pitch,
+                bearing: stop.flyTo.bearing,
+                essential: true
+            });
+            updateDescription(stop.content);
+        }
+        // Navigates to the next stop in the tour
+        function flyToNextStop() {
+            if (currentStopIndex < markersData.length - 1) {
+                currentStopIndex++;
+                flyToStop(currentStopIndex);
+            }
+        }
+        // Navigates to the previous stop in the tour
+        function flyToPrevStop() {
+            if (currentStopIndex > 0) {
+                currentStopIndex--;
+                flyToStop(currentStopIndex);
+            }
+        }
+        
+        // Initialize the Mapbox Geocoder and add it to the map
+        var geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl
+        });
+        document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+        
+        // Add navigation control (with compass)
+        var nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'top-right')
+
+        
+        // Set minimum zoom level
+        map.setMinZoom(12); // Set your minimum zoom level here
+        
+        
+    </script>
+</body>
+
+</html>
