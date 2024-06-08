@@ -155,11 +155,11 @@
 
 <body>
     
-        <!-- Button to return to main menu & starting coordinates -->
-    <button class="backToMenuButton" id="backToMenuButton" onclick="backToMenu()">Back to Menu</button>
+    <!-- Button to return to main menu & starting coordinates -->
+        <button class="backToMenuButton" id="backToMenuButton" onclick="backToMenu()">Back to Menu</button>
     
     <!-- Title & Instructions for description panel  -->
-    <div class="descriptionPanel" id="descriptionPanel">
+        <div class="descriptionPanel" id="descriptionPanel">
         <h3>Landmark Tour of the National Mall in Washington D.C.</h3>
         <p><strong>By: Juliette Setudeh Nejad</strong></p>
         <p id="sidebar-content">
@@ -177,23 +177,23 @@
     
         </p>
 
-    </div>
+        </div>
     
-    <div id='map'></div>
+        <div id='map'></div>
     <!-- Buttons for controlling the fly to tour  -->
-    <div class="tourButtons">
-        <button class="flyToButton" onclick="startTour()" id="flyToButton">Take a tour</button>
-        <button class="navigationButton" onclick="flyToPrevStop()" id="prevButton">Back</button>
-        <button class="navigationButton" onclick="flyToNextStop()" id="nextButton">Next</button>
-        <button class="navigationButton" onclick="endTour()" id="endButton">End Tour</button>
-    </div>
-    
+        <div class="tourButtons">
+            <button class="flyToButton" onclick="startTour()" id="flyToButton">Take a tour</button>
+            <button class="navigationButton" onclick="flyToPrevStop()" id="prevButton">Back</button>
+            <button class="navigationButton" onclick="flyToNextStop()" id="nextButton">Next</button>
+            <button class="navigationButton" onclick="endTour()" id="endButton">End Tour</button>
+        </div>
+
     <!-- Adding a search bar  -->
-    <div id="geocoder" class="geocoder"></div>
-    
+        <div id="geocoder" class="geocoder"></div>
+
     <!-- initializing map with mapbox, and setting starting coordinates and max bounds -->
-    <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoianNldHVkZWgiLCJhIjoiY2x1bGhrbTE1MHczeDJrbzZiNzZ3d3g1aSJ9.JteB5M3Y64mBcpSgTwDkvw';
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoianNldHVkZWgiLCJhIjoiY2x1bGhrbTE1MHczeDJrbzZiNzZ3d3g1aSJ9.JteB5M3Y64mBcpSgTwDkvw';
         
         
         var map = new mapboxgl.Map({
@@ -205,10 +205,10 @@
                 [-77.119759, 38.791645], 
                 [-76.909393, 38.995548]]});
         
-            // Creating and labeling markers to place on map, creates setting for 'fly to' animation such as tilt and direction of map 
+    // Creating and labeling markers to place on map, creates setting for 'fly to' animation such as tilt and direction of map 
         const markersData = [
            
-                        // United States Capitol Building 
+    // United States Capitol Building 
             {
                 coordinates: [-77.00903829, 38.88980193],
                 content: `<h2>United States Capitol Building </h2>
@@ -220,7 +220,7 @@
             },
             
 
-            // National Museum of Natural History 
+      // National Museum of Natural History 
             {
                 coordinates: [-77.02597582, 38.89127308],
                 content: `<h2>National Museum of Natural History</h2>
@@ -231,20 +231,19 @@
             },
 
            
-             // National Museum of African American History & Culture
+        // National Museum of African American History & Culture
             {
                 coordinates: [-77.03271691, 38.89101356],
                 content: `<h2>National Museum of African American History & Culture</h2>
                 <p><span class="address-text">Address: <a href="https://www.google.com/maps?q=1400+Constitution+Ave+NW,+Washington,+DC+20560" target="_blank">1400 Constitution Ave NW, Washington, DC 20560</a></span></p>
                 <p>This Smithsonian museum is dedicated to the documentation of African American life, history, and culture. The museum’s collection includes over 36,000 artifacts, ranging from Harriet Tubman's hymnal to Chuck Berry’s Cadillac. It offers an in-depth look at the African American experience through powerful exhibits and engaging displays.</p>
-                <img src="https://ids.si.edu/ids/deliveryService?id=https://www.si.edu/sites/default/files/images/nmaahc-1000x675.jpg" alt="African American History Museum Image">
-     <span class="source-txt"><strong>Source : </strong>Smithsonian Institution, <span class="source-txt"> <a href="https://www.si.edu/museums/african-american-museum">Website</a>`,
+                <img src="https://ids.si.edu/ids/deliveryService?id=https://www.si.edu/sites/default/files/images/nmaahc-1000x675.jpg" alt="African American History Museum Image"><span class="source-txt"><strong>Source : </strong>Smithsonian Institution, <span class="source-txt"> <a href="https://www.si.edu/museums/african-american-museum">Website</a>`,
                 flyTo: { zoom: 18, pitch: 60, bearing: 10 }
             },
             
             
             
-            // Washington Monument
+      // Washington Monument
             {
                 coordinates: [-77.03524373, 38.88946987],
                 content: `<h2>Washington Monument</h2>
@@ -254,7 +253,7 @@
                 <span class="source-txt"><strong>Source : </strong>National Park Service, <a href="https://www.nps.gov/wamo/index.htm" class="source-txt">Website</a></span>`,
                 flyTo: { zoom: 17, pitch: 60, bearing: -90 }
             },
-            // World War II Memorial & Reflecting Pool
+        // World War II Memorial & Reflecting Pool
             {
                 coordinates: [-77.0401472, 38.88943847],
                 content: `<h2>World War II Memorial & Reflecting Pool</h2>
@@ -263,7 +262,7 @@
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1AtXf1oZaMBw7kLdAVVRh6xMErb070SSBxw&s"><span class="source-txt"><strong>Source : </strong>Washington D.C Travel, <a href="http://www.dchistory.com/ww2-memorial-history.html" class="source-txt">Website</a></span>`,
                 flyTo: { zoom: 18, pitch: 80, bearing: -90 }
             },
-            // Lincoln Memorial 
+         // Lincoln Memorial 
             {
                 coordinates: [-77.04995662714357, 38.88935883549587],
                 content: `<h2>Lincoln Memorial</h2>
@@ -272,7 +271,7 @@
                 <img src="https://washington.org/sites/default/files/styles/generic_hero_banner_1440_x_600/public/pixels.sh_visitors-to-the-lincoln-memorial-at-night_mydccool-via-crowdriff.jpg.webp?itok=GtcWRBm" alt="Lincoln Memorial Image"><span class="source-txt"><strong>Source : </strong>Washington DC, <a href="https://washington.org/DC-guide-to/lincoln-memorial" class="source-txt">Website</a></span>`,
                 flyTo: { zoom: 18, pitch: 80, bearing: -90 }
             },
-            // MLK Memorial
+         // MLK Memorial
             {
                 coordinates: [-77.04432637, 38.88629772],
                 content: `<h2>Martin Luther King Jr. Memorial</h2>
@@ -282,7 +281,7 @@
 
                 flyTo: { zoom: 18, pitch: 55, bearing: 20 }
             },
-            // Franklin Delano Roosevelt Memorial
+         // Franklin Delano Roosevelt Memorial
             {
                 coordinates: [-77.04381696, 38.88374061],
                 content: `<h2>Franklin Delano Roosevelt Memorial</h2>
@@ -293,7 +292,7 @@
 
                 flyTo: { zoom: 18, pitch: 75, bearing: -150 }
             },
-            // Thomas Jefferson Memorial
+         // Thomas Jefferson Memorial
             {
                 coordinates: [-77.03655523, 38.88139516],
                 content: `<h2>Thomas Jefferson Memorial</h2>
@@ -303,7 +302,7 @@
 
                 flyTo: { zoom: 17.5, pitch: 55, bearing: 180 }
             },
-            // Smithsonian Museums
+          // Smithsonian Museums
             {
                 coordinates: [ -77.02603211873019, 38.8889829438225],
                 content: `<h2>Smithsonian Museums</h2>
@@ -315,7 +314,7 @@
             },
 
             
-            //United States Botanic Garden
+          //United States Botanic Garden
             {
             coordinates: [-77.01286184232914, 38.888328822572255],
             content: `<h2>United States Botanic Garden </h2>
@@ -329,14 +328,14 @@
         ];
         
         //Makes fly to tour start from the first stop
-        let currentStopIndex = 0;
-        let markers = [];
-        
+            let currentStopIndex = 0;
+            let markers = [];
+
         //Creates red markers and sets their coordinates 
-        markersData.forEach((markerData, index) => {
-            const marker = new mapboxgl.Marker({ color: '#c23b22' })
-                .setLngLat(markerData.coordinates)
-                .addTo(map);
+            markersData.forEach((markerData, index) => {
+                const marker = new mapboxgl.Marker({ color: '#c23b22' })
+                    .setLngLat(markerData.coordinates)
+                    .addTo(map);
 
         //Adds click event listeneres to the marker 
             marker.getElement().addEventListener('click', () => {
@@ -351,59 +350,63 @@
         });
 
         //Adds click event listeners to the marker 
-        function updateDescription(content) {
-            var descriptionPanel = document.getElementById('descriptionPanel');
-            var sidebarContent = document.getElementById('sidebar-content');
-            sidebarContent.innerHTML = content;
-            document.querySelector('#descriptionPanel h3').style.display = 'none';
-            document.querySelector('#descriptionPanel p strong').style.display = 'none';
-            document.getElementById('backToMenuButton').style.display = 'inline';
+            function updateDescription(content) {
+                var descriptionPanel = document.getElementById('descriptionPanel');
+                var sidebarContent = document.getElementById('sidebar-content');
+                sidebarContent.innerHTML = content;
+                document.querySelector('#descriptionPanel h3').style.display = 'none';
+                document.querySelector('#descriptionPanel p strong').style.display = 'none';
+                document.getElementById('backToMenuButton').style.display = 'inline';
 
-            setTimeout(function () {
-                descriptionPanel.style.height = 'auto';
-            }, 100);
-        }
-    // Starts tour
-        function startTour() {
-            document.getElementById('flyToButton').style.display = 'none';
-            document.getElementById('prevButton').style.display = 'inline';
-            document.getElementById('nextButton').style.display = 'inline';
-            document.getElementById('endButton').style.display = 'inline';
-            flyToStop(currentStopIndex);
-        }
+                setTimeout(function () {
+                    descriptionPanel.style.height = 'auto';
+                }, 100);
+            }
+        // Starts tour
+            function startTour() {
+                document.getElementById('flyToButton').style.display = 'none';
+                document.getElementById('prevButton').style.display = 'inline';
+                document.getElementById('nextButton').style.display = 'inline';
+                document.getElementById('endButton').style.display = 'inline';
+                flyToStop(currentStopIndex);
+            }
         // Ends the tour
         function endTour() {
+            
         // Centers the map to the starting view 
-            map.flyTo({
-                center: [-77.0401472, 38.88943847],
-                zoom: 13.7,
-                pitch: 0,
-                bearing: 0
-            });
-            currentStopIndex = 0;
+                map.flyTo({
+                    center: [-77.0401472, 38.88943847],
+                    zoom: 13.7,
+                    pitch: 0,
+                    bearing: 0
+                });
+                currentStopIndex = 0;
             
         //Displays the "Take a tour" button 
-            document.getElementById('flyToButton').style.display = 'inline';
+                document.getElementById('flyToButton').style.display = 'inline';
+            
         //Hides navigation buttons  
-            document.getElementById('prevButton').style.display = 'none';
-            document.getElementById('nextButton').style.display = 'none';
-            document.getElementById('endButton').style.display = 'none';
+                document.getElementById('prevButton').style.display = 'none';
+                document.getElementById('nextButton').style.display = 'none';
+                document.getElementById('endButton').style.display = 'none';
+            
         // Resets the description panel content to initial instructions
-            document.getElementById('sidebar-content').innerHTML = '<p>This is an interactive map that displays a route to landmarks in Washington D.C.<br><br><strong>How to use the map:</strong><br>1. Click on any marker to view details about the landmark.<br>2. Use the "Take a tour" button to start an automated tour of the landmarks.<br>3. Navigate between stops using the "Next" and "Back" buttons.<br>4. Click "End Tour" to stop the automated tour and return to the initial view.<br>5. Use the search bar to find specific locations.<br>6. Use the navigation controls on the top right to zoom and rotate the map. <br><br> <span class="source-txt"><strong>Source : </strong>Open Data DC</span></p>';
+             document.getElementById('sidebar-content').innerHTML = '<p>This is an interactive map that displays a route to landmarks in Washington D.C.<br><br><strong>How to use the map:</strong><br>1. Click on any marker to view details about the landmark.<br>2. Use the "Take a tour" button to start an automated tour of the landmarks.<br>3. Navigate between stops using the "Next" and "Back" buttons.<br>4. Click "End Tour" to stop the automated tour and return to the initial view.<br>5. Use the search bar to find specific locations.<br>6. Use the navigation controls on the top right to zoom and rotate the map. <br><br> <span class="source-txt"><strong>Source : </strong>Open Data DC</span></p>';
         // Shows title and name in description panel 
-            document.querySelector('#descriptionPanel h3').style.display = 'block';
-            document.querySelector('#descriptionPanel p strong').style.display = 'block';
+                document.querySelector('#descriptionPanel h3').style.display = 'block';
+                document.querySelector('#descriptionPanel p strong').style.display = 'block';
+            
         // Hides the back to menu button 
          document.getElementById('backToMenuButton').style.display = 'none';
         }
         //Creates function to return back to main menu & starting coordinates 
-        function backToMenu() {
-            map.flyTo({
-                center: [-77.0401472, 38.88943847],
-                zoom: 13.7,
-                pitch: 0,
-                bearing: 0
-            });
+            function backToMenu() {
+                map.flyTo({
+                    center: [-77.0401472, 38.88943847],
+                    zoom: 13.7,
+                    pitch: 0,
+                    bearing: 0
+                });
             document.getElementById('sidebar-content').innerHTML = '<p>This is an interactive map that displays a route to  landmarks in Washington D.C.<br><br><strong>How to use the map:</strong><br>1. Click on any marker to view details about the landmark.<br>2. Use the "Take a tour" button to start an automated tour of the landmarks.<br>3. Navigate between stops using the "Next" and "Back" buttons.<br>4. Click "End Tour" to stop the automated tour and return to the initial view.<br>5. Use the search bar to find specific locations.<br>6. Use the navigation controls on the top right to zoom and rotate the map.<br><br> <span class="source-txt"><strong>Source : </strong>Open Data DC</span></p>';
             
     
